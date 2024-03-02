@@ -13,3 +13,15 @@ class Personal(User):
     
     def __str__(self) -> str:
         return self.username
+    
+class Student(User):
+    height = models.FloatField(blank=True)
+    weight = models.FloatField(blank=True)
+    age = models.IntegerField()
+    
+    class Meta:
+        verbose_name = 'Student'
+        verbose_name_plural = 'Students'
+    
+    def __str__(self) -> str:
+        return self.username
