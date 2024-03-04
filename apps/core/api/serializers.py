@@ -1,5 +1,6 @@
 from django.core import exceptions
 from django.contrib.auth import password_validation
+from django.db import transaction
 
 from rest_framework import serializers
 from ..models import Personal, Student
@@ -13,7 +14,14 @@ class PersonalSerializer(serializers.ModelSerializer):
                 'last_name', 'email', 'is_personal',
                 'password',
     )
+        extra_kwargs = {
+            'is_personal': {'read_only': True},
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+            'email': {'required': True},
+        }
     
+    @transaction.atomic()
     def create(self, validated_data):
         user = Personal(**validated_data)
         password = validated_data.get('password')
@@ -49,6 +57,7 @@ class StudentSerializer(serializers.ModelSerializer):
                 'height', 'weight', 'password',
     )
     
+    @transaction.atomic()
     def create(self, validated_data):
         user = Student(**validated_data)
         password = validated_data.get('password')
