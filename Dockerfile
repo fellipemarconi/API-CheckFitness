@@ -11,12 +11,12 @@ COPY scripts /scripts
 
 RUN pip install -r requirements.txt
 RUN adduser --disabled-password --no-create-home duser
-RUN mkdir -p /data/web/static
-RUN mkdir -p /data/web/media
-RUN chown -R duser:duser /data/web/static
-RUN chown -R duser:duser /data/web/media
-RUN chmod -R 755 /data/web/static
-RUN chmod -R 755 /data/web/media
+RUN mkdir -p static
+RUN mkdir -p media
+RUN chown -R duser:duser static
+RUN chown -R duser:duser media
+RUN chmod -R 755 static
+RUN chmod -R 755 media
 RUN chmod -R +x /scripts
 
 COPY . .
