@@ -5,10 +5,11 @@ services:
     container_name: checkfitness
     build:
       context: .
+    command: python3 manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
     volumes:
-      - ./project:/project
+      - .:/app
       - ./data/web/static:/data/web/static/
       - ./data/web/media:/data/web/media/
     env_file:

@@ -1,6 +1,6 @@
 # Comands
 DOCKER_COMPOSE=docker-compose
-PYTHON_MANAGE=python manage.py
+PYTHON_MANAGE=python3 manage.py
 
 # Build the containers
 build:
@@ -8,7 +8,7 @@ build:
 
 # Start the application
 up:
-	$(DOCKER_COMPOSE) up -d
+	$(DOCKER_COMPOSE) up 
 
 # Stop the application
 down:
