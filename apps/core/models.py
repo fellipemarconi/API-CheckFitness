@@ -15,8 +15,8 @@ class Personal(User):
         return self.username
     
 class Student(User):
-    height = models.FloatField(blank=True)
-    weight = models.FloatField(blank=True)
+    height = models.FloatField()
+    weight = models.FloatField()
     age = models.IntegerField()
     
     class Meta:

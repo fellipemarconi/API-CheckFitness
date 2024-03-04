@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 
 from .serializers import StudentSerializer, PersonalSerializer
 from ..models import Personal, Student
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from ..permissions import IsPersonalOrReadOnly
 
 
 class PersonalViewSet(ModelViewSet):
@@ -15,7 +15,7 @@ class PersonalViewSet(ModelViewSet):
     
 class StudentViewSet(ModelViewSet):
     serializer_class = StudentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [IsPersonalOrReadOnly, ]
     
     def get_queryset(self):
         queryset = Student.objects.filter(username=self.request.user.username) # type:ignore

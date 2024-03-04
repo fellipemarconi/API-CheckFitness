@@ -56,6 +56,11 @@ class StudentSerializer(serializers.ModelSerializer):
                 'last_name', 'email', 'age', 
                 'height', 'weight', 'password',
     )
+        extra_kwargs = {
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+            'email': {'required': True},
+        }
     
     @transaction.atomic()
     def create(self, validated_data):
