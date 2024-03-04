@@ -6,7 +6,7 @@ from .models import Personal, Student
 class PersonalAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'username', 'is_personal',
-        'first_name', 'last_name', 'email'
+        'email'
     )
     search_fields = ('id', 'username', 'email')
     ordering = '-id',
