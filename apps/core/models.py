@@ -5,10 +5,10 @@ from django.contrib.auth.models import User
 class SexOptions(models.TextChoices):
     FEMALE = ('F', 'Female')
     MALE = ('M', 'Male')
-    UNSURE = ('U', 'Unsure')
+    OTHER = ('O', 'Other')
 
 class Personal(User):
-    
+    name = models.CharField(max_length=255)
     is_personal = models.BooleanField(default=True)
     
     class Meta:
@@ -19,6 +19,7 @@ class Personal(User):
         return self.username
     
 class Student(User):
+    name = models.CharField(max_length=255)
     height = models.FloatField()
     weight = models.FloatField()
     age = models.IntegerField()

@@ -10,8 +10,8 @@ class PersonalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Personal
         fields = (
-                'id', 'username', 'email', 
-                'is_personal', 'password',
+                'id', 'username', 'name', 
+                'email', 'is_personal', 'password',
     )
         extra_kwargs = {
             'is_personal': {'read_only': True},
@@ -49,14 +49,12 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = (
-                'id', 'username', 'first_name',
-                'last_name', 'email', 'age', 
-                'height', 'weight', 'sex', 
-                'student_personal', 'password',
+                'id', 'username', 'name',
+                'email', 'age', 'height',
+                'weight', 'sex', 'student_personal',
+                'password',
     )
         extra_kwargs = {
-            'first_name': {'required': True},
-            'last_name': {'required': True},
             'email': {'required': True},
             'student_personal': {'read_only': True}
         }

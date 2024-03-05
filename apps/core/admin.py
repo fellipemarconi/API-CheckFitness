@@ -5,10 +5,10 @@ from .models import Personal, Student
 @admin.register(Personal)
 class PersonalAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'username', 'is_personal',
-        'email'
+        'id', 'username','name', 
+        'is_personal', 'email'
     )
-    search_fields = ('id', 'username', 'email')
+    search_fields = ('id', 'username', 'name', 'email')
     ordering = '-id',
     list_per_page = 25
     list_max_show_all = 100
@@ -16,10 +16,9 @@ class PersonalAdmin(admin.ModelAdmin):
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'username','first_name', 
-        'last_name', 'email'
+        'id', 'username', 'name', 'email', 'student_personal'
     )
-    search_fields = ('id', 'username', 'email')
+    search_fields = ('id', 'username', 'name', 'email')
     ordering = '-id',
     list_per_page = 25
     list_max_show_all = 100
