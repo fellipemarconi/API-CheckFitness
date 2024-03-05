@@ -18,6 +18,10 @@ down:
 clean:
 	$(DOCKER_COMPOSE) down -v --remove-orphans
 
+# Manage and flags
+manage:
+	$(DOCKER_COMPOSE) run --rm web $(PYTHON_MANAGE) $(CMD)
+
 # Make migrations in Django
 makemigrations:
 	$(DOCKER_COMPOSE) run --rm web $(PYTHON_MANAGE) makemigrations
@@ -37,6 +41,7 @@ collectstatic:
 help:
 	@echo "Usage: make <target>"
 	@echo "Available targets:"
+	@echo "	 manage CMD='[options / flags]'"
 	@echo "  help               - Display this help message"
 	@echo "  build              - Build Docker images"
 	@echo "  up                 - Start the application"
