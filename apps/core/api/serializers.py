@@ -51,17 +51,21 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = (
                 'id', 'username', 'first_name',
                 'last_name', 'email', 'age', 
-                'height', 'weight', 'sex', 'password',
+                'height', 'weight', 'sex', 
+                'student_personal', 'password',
     )
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True},
             'email': {'required': True},
+            'student_personal': {'read_only': True}
         }
     
     @transaction.atomic()
     def create(self, validated_data):
-        user = Student(**validated_data)
+        student_personal = Personal.objects.filter(username=self.context['request'].user).first()
+        
+        user = Student(**validated_data, student_personal=student_personal)
         password = validated_data.get('password')
         user.set_password(password)
         

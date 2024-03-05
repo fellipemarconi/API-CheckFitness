@@ -24,6 +24,7 @@ class Student(User):
     weight = models.FloatField()
     age = models.IntegerField()
     sex = models.CharField(max_length=1, choices=SexOptions.choices)
+    student_personal = models.ForeignKey(Personal, on_delete=models.SET_NULL, null=True)
     
     class Meta:
         verbose_name = 'Student'
