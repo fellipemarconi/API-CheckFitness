@@ -51,7 +51,7 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = (
                 'id', 'username', 'first_name',
                 'last_name', 'email', 'age', 
-                'height', 'weight', 'password',
+                'height', 'weight', 'sex', 'password',
     )
         extra_kwargs = {
             'first_name': {'required': True},
