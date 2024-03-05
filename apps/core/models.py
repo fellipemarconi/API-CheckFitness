@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
 class SexOptions(models.TextChoices):
     FEMALE = ('F', 'Female')
     MALE = ('M', 'Male')
