@@ -51,3 +51,17 @@ class Student(User):
     
     def __str__(self) -> str:
         return self.username
+    
+    @receiver(reset_password_token_created)
+    def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+        email_plaintext_message = "Open the link to reset your password:" + " " + "{}?token={}".format(
+            instance.request.build_absolute_uri(reverse('password_reset:reset-password-confirm')),
+            reset_password_token.key)
+        
+        send_mail(
+            "Password Reset for {title}".format(title="CheckFitness account"),
+            email_plaintext_message,
+            "info@yourcompany.com",
+            [reset_password_token.user.email],
+            fail_silently=False,
+        )
