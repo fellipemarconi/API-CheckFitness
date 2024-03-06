@@ -1,6 +1,7 @@
 from django.core import exceptions
 from django.contrib.auth import password_validation
 from django.db import transaction
+from django.contrib.auth.models import User
 
 from rest_framework import serializers
 from ..models import Personal, Student
@@ -10,17 +11,18 @@ class PersonalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Personal
         fields = (
-                'id', 'username', 'name', 
-                'email', 'is_personal', 'password',
+                'id', 'username', 'email', 'name', 
+                'is_personal', 'password',
     )
         extra_kwargs = {
-            'is_personal': {'read_only': True},
             'email': {'required': True},
+            'is_personal': {'read_only': True},
+            'username': {'read_only': True},
         }
     
     @transaction.atomic()
     def create(self, validated_data):
-        user = Personal(**validated_data)
+        user = Personal(**validated_data, username=validated_data['email'])
         password = validated_data.get('password')
         user.set_password(password)
         
@@ -30,8 +32,11 @@ class PersonalSerializer(serializers.ModelSerializer):
     def validate_email(self, value):
         email = value
         
-        if Personal.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             raise serializers.ValidationError('Email is already registered', code='invalid')
+        
+        if email == '':
+            raise serializers.ValidationError('Email cannot be null or empty', code='invalid')
         
         return email
     
@@ -49,13 +54,14 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = (
-                'id', 'username', 'name',
-                'email', 'age', 'height',
-                'weight', 'sex', 'student_personal',
+                'id', 'username', 'email', 
+                'name', 'age', 'height', 
+                'weight', 'sex', 'student_personal', 
                 'password',
     )
         extra_kwargs = {
             'email': {'required': True},
+            'username': {'read_only': True},
             'student_personal': {'read_only': True}
         }
     
@@ -63,7 +69,7 @@ class StudentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         student_personal = Personal.objects.filter(username=self.context['request'].user).first()
         
-        user = Student(**validated_data, student_personal=student_personal)
+        user = Student(**validated_data, student_personal=student_personal, username=validated_data['email'])
         password = validated_data.get('password')
         user.set_password(password)
         
@@ -73,8 +79,11 @@ class StudentSerializer(serializers.ModelSerializer):
     def validate_email(self, value):
         email = value
         
-        if Student.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             raise serializers.ValidationError('Email is already registered', code='invalid')
+        
+        if email == '':
+            raise serializers.ValidationError('Email cannot be null or empty', code='invalid')
         
         return email
     
