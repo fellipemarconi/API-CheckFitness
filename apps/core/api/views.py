@@ -32,6 +32,16 @@ class StudentViewSet(ModelViewSet):
         queryset = Student.objects.filter(username=self.request.user.username) # type:ignore
         return queryset
     
+    def update(self, request, pk=None, *args, **kwargs):
+        student = Student.objects.filter(pk=pk, student_personal=request.user).first()
+        try:
+            serializer = self.get_serializer(student, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
+        except:
+            return Response({'message': 'You dont have permission to update this student.'}, status=status.HTTP_403_FORBIDDEN)
+    
 class LogoutAPIView(APIView):
     permission_classes = [IsAuthenticated, ]
     
