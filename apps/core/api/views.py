@@ -27,7 +27,11 @@ class StudentViewSet(ModelViewSet):
     
     def get_queryset(self):
         queryset = Student.objects.all().filter(student_personal=self.request.user)
-        return queryset
+        if queryset:
+            return queryset
+        else:
+            queryset = Student.objects.filter(username=self.request.user.username) # type:ignore
+            return queryset
     
     def update(self, request, pk=None, *args, **kwargs):
         student = Student.objects.filter(pk=pk, student_personal=request.user).first()
