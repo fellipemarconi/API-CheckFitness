@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.filters import SearchFilter
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.decorators import action
@@ -18,18 +19,14 @@ class PersonalViewSet(ModelViewSet):
         queryset = Personal.objects.filter(username=self.request.user.username) # type:ignore
         return queryset
     
-    @action(methods=['get'], detail=False)
-    def my_students(self, request):
-        students = Student.objects.filter(student_personal=request.user)
-        serializer = StudentSerializer(instance=students, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
 class StudentViewSet(ModelViewSet):
     serializer_class = StudentSerializer
     permission_classes = [IsPersonalOrReadOnly, ]
+    filter_backends = [SearchFilter]
+    search_fields = ['email', 'name']
     
     def get_queryset(self):
-        queryset = Student.objects.filter(username=self.request.user.username) # type:ignore
+        queryset = Student.objects.all().filter(student_personal=self.request.user)
         return queryset
     
     def update(self, request, pk=None, *args, **kwargs):
