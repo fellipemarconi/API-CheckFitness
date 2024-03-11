@@ -4,15 +4,16 @@ from django.db import transaction
 from django.contrib.auth.models import User
 
 from rest_framework import serializers
-from ..models import Personal, Student
-
+from ..models import Personal, Student, Sport
 
 class PersonalSerializer(serializers.ModelSerializer):
+    sport = serializers.PrimaryKeyRelatedField(queryset=Sport.objects.all())
+    
     class Meta:
         model = Personal
         fields = (
                 'id', 'username', 'email', 'name', 
-                'is_personal', 'password',
+                'is_personal', 'sport', 'password',
     )
         extra_kwargs = {
             'email': {'required': True},
@@ -51,13 +52,15 @@ class PersonalSerializer(serializers.ModelSerializer):
         return data
 
 class StudentSerializer(serializers.ModelSerializer):
+    sport = serializers.PrimaryKeyRelatedField(queryset=Sport.objects.all(), many=True)
+    
     class Meta:
         model = Student
         fields = (
                 'id', 'username', 'email', 
                 'name', 'age', 'height', 
-                'weight', 'sex', 'student_personal', 
-                'password',
+                'weight', 'sex', 'student_personal',
+                'sport', 'password',
     )
         extra_kwargs = {
             'email': {'required': True},

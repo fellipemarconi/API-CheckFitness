@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Personal, Student
+from .models import Personal, Student, Sport
 
 # Register your models here.
 @admin.register(Personal)
@@ -22,3 +22,7 @@ class StudentAdmin(admin.ModelAdmin):
     ordering = '-id',
     list_per_page = 25
     list_max_show_all = 100
+    
+@admin.register(Sport)
+class SportAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')

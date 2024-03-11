@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.urls import reverse
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import send_mail
 
 from django_rest_passwordreset.signals import reset_password_token_created
 
@@ -11,10 +11,17 @@ class SexOptions(models.TextChoices):
     FEMALE = ('F', 'Female')
     MALE = ('M', 'Male')
     OTHER = ('O', 'Other')
+    
+class Sport(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __str__(self) -> str:
+        return self.name
 
 class Personal(User):
     name = models.CharField(max_length=255)
     is_personal = models.BooleanField(default=True)
+    sport = models.ForeignKey(Sport, on_delete=models.SET_NULL, null=True)
     
     class Meta:
         verbose_name = 'Personal'
@@ -44,6 +51,7 @@ class Student(User):
     age = models.IntegerField()
     sex = models.CharField(max_length=1, choices=SexOptions.choices)
     student_personal = models.ForeignKey(Personal, on_delete=models.SET_NULL, null=True)
+    sport = models.ManyToManyField(Sport, blank=True)
     
     class Meta:
         verbose_name = 'Student'

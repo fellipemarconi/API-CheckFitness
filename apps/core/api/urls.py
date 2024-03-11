@@ -1,10 +1,10 @@
 from rest_framework import routers
-from .views import StudentViewSet, PersonalViewSet
+from . import views
 
 
 router = routers.SimpleRouter()
-router.register(r'personal', PersonalViewSet, basename='personal')
-router.register(r'student', StudentViewSet, basename='student')
+router.register(r'personal', views.PersonalViewSet, basename='personal')
+router.register(r'student', views.StudentViewSet, basename='student')
 
 
 urlpatterns = router.urls
